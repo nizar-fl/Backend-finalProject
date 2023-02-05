@@ -1,0 +1,30 @@
+{
+  "name": "backend-finalproject",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nizar-fl/Backend-finalProject.git"
+  },
+  "author": "Nizar Flahi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nizar-fl/Backend-finalProject/issues"
+  },
+  "homepage": "https://github.com/nizar-fl/Backend-finalProject#readme",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
+    "mongoose": "^6.8.4"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
