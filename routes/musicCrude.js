@@ -1,24 +1,24 @@
 const express = require("express");
+const router = express.Router();
+// add a song to a playlist 
+// remove a song from a playlist 
+// get song by id
+// get all songs
+// removeSongFromPlaylist,
+//     getSongById,
+//     getAllSongs
 
+const {
+    addSongToPlaylist,
+    removeSongFromPlaylist,
+    getSongById,
+    getAllSongs
+    
+}= require("../controllers/MusicControllers")
+const isAuth = require("../middlewares/isAuth");
 
-// const {
-//     addProduct,
-//     deleteProduct,
-//     updateProduct,
-//     getProductById,
-//     getProducts,
-//   } = require("../controllers/productsControllers");
-//   const isAuth = require("../middlewares/isAuth");
-//   const router = express.Router();
-  
-//   router.post("/addProduct", isAuth, addProduct);
-  
-//   router.delete("/deleteProduct/:productId", isAuth, deleteProduct);
-  
-//   router.put("/updateProduct/:productId", isAuth, updateProduct);
-  
-//   router.get("/getProductById/:productId", isAuth, getProductById);
-  
-//   router.get("/", getProducts);
-  
-//   module.exports = router;
+router.put("/addSongToPlaylist"  ,addSongToPlaylist)
+router.put("/removeSongFromPlaylist",removeSongFromPlaylist)
+router.get("/getSong/:songid",getSongById)
+router.get("/getAllSongs",getAllSongs)
+module.exports = router;

@@ -12,6 +12,10 @@ const songSchema = mongoose.Schema({
     artistId:{
         type:String,
         required:true
+    },
+    songType:{
+        type:String,
+        required:true
     }
 })
 
