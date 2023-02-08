@@ -1,7 +1,7 @@
 const playlist = require("../models/playlistSchema");
 
 const getUserPlaylists = async (req ,res )=>{
-  const  userID = req.params.userID
+  const  userID = req.headers["userid"]
   try {
     playlist.find({userID: userID},(err, playlists) => {
       if (err) {

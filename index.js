@@ -15,8 +15,9 @@ connectDB();
 app.use(express.json());
 
 app.use("/auth", require("./routes/Auth"));
-app.use("/",require("./routes/playlistPages"))
+app.use("/playlists",require("./routes/playlistPages"))
 app.use("/songs",require("./routes/musicCrude"))
+app.use("/albums",require("./routes/albumPages"))
 
 app.listen(PORT, ()=> {
     console.log("the server is running")

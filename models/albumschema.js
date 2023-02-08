@@ -18,7 +18,7 @@ const albumSchema = mongoose.Schema({
     },
     songsIds: [
         {
-            type: ObjectId,
+            type: String,
             ref: 'Song'
         }
     ]
