@@ -32,39 +32,40 @@ const getArtistAlbums = async (req,res)=>{
 }
 const addAlbum = async(req,res)=>{
     try {
-        const newAlbum = new Album({...req.body})
-        await newAlbum.save((err)=>{
-            if(err){
-                res.status(500).json({msg:"something went wrong or some infomatins are missing"})
-            } 
-            
-            })
-           
-        
-        
-    } catch (error) {
-        return res.status(500).json({ msg: err.message });
-    }
-    try {
-        const songs = req.body.songs
-        console.log("hgemmmmmmmmmmmmmmmm")
-            songs.forEach(element => {
-                const newsong = new Song({...element})
-                newsong.save((err)=>{
-                    if(err){
-                        res.status(500).json({msg:"something went wrong or some infomatins are missing"})
-                    }
-                    
-                })
-                res.status(201).json({msg:"album created succesfully"})// i still have problems with the error of sending multiple response to a single rquest 
-                
-                
-                
-            })
-        
-    } catch (err) {
-        return res.status(500).json({ msg: err.message });
-    }
+        // Get the data from the request body
+        const { albumName, artistId, songs } = req.body;
+    
+        // Create new instances of the songs
+        const songPromises = songs.map(song => {
+          const newSong = new Song(song);
+          return newSong.save();
+        });
+    
+        // Wait for all the songs to be saved
+        Promise.all(songPromises)
+          .then(songs => {
+            // Get the IDs of the songs that were just saved
+            const songsIds = songs.map(song => song._id);
+    
+            // Create a new album instance and add the song IDs
+            const album = new Album({
+              albumName,
+              artistId,
+              songsIds
+            });
+    
+            // Save the album
+            album.save()
+              .then(() => {
+                res.status(200).json({ message: 'Data saved successfully!' });
+              });
+          })
+          .catch(error => {
+            throw error;
+          });
+      } catch (error) {
+        res.status(500).json({ message: error.message });
+      }
 }
 const deleteAlbum = async (req,res)=>{
     const albumId= req.params.albumid
@@ -114,6 +115,11 @@ const addSongToAlbum = async (req,res)=>{
         return res.status(500).json({ msg: err.message });
     }
 }
+// btw the addSongToAlbum function needs only the songid but the artist
+// does not need to add a song to the dataBase then add it again to the Album so i need 
+// a function that gets a the music from the request body and add it 
+// to the songs and takes the ids and add it to the Album it self
+// its just an update version of the addAlbum function done previously
 const removeSongFromAlbum = async (req,res)=>{
     const songId = req.headers["songid"]
     const albumid = req.params
@@ -139,12 +145,33 @@ const removeSongFromAlbum = async (req,res)=>{
     } catch (error) {
         return res.status(500).json({ msg: err.message });
     }
+} 
+const getAlbumById = async (req,res)=>{
+    const AlbumId = req.params.albumid
+    console.log(AlbumId)
+    try {
+      Album.findById(AlbumId,(err,album)=>{
+        if(err){
+          console.log(err)
+          res.status(400).json({msg:"album not found"})
+        }
+        res.status(200).json(album)          
+      })
+    
+      
+
+    } catch (error) {
+      return res.status(500).json({ msg: error.message });
+    }
+
+
 }
 
 
 module.exports = {
+    getAlbumById,
     getAllAlbums,
-    getArtistAlbums,// get by user id (artist id)
+    getArtistAlbums,
     addAlbum,
     deleteAlbum,// delete by id
     addSongToAlbum,//here we are working only with the song id // update the Album

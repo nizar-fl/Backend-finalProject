@@ -20,11 +20,11 @@ const router = express.Router();
 const isAuth = require("../middlewares/isAuth");
 const isArtist = require("../middlewares/isArist")
 
-router.post("/addPlaylist", addPlaylist);
-router.get("/getUserPlaylists/:userID", getUserPlaylists);
-router.delete("/deletePlaylist/:playlistId" , deletePlaylist)
-router.put("/updatePlaylist/:playlistId", updatePlaylist)
-router.get("/getPlaylist/:playlistID" , getplaylist)
+router.post("/addPlaylist",isAuth, addPlaylist);
+router.get("/getUserPlaylists/:userID",isAuth, getUserPlaylists);
+router.delete("/deletePlaylist/:playlistId" ,isAuth, deletePlaylist)
+router.put("/updatePlaylist/:playlistId",isAuth, updatePlaylist)
+router.get("/getPlaylist/:playlistID" ,isAuth, getplaylist)
 module.exports = router;
 
 

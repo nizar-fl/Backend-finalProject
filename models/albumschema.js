@@ -1,6 +1,7 @@
 const mongoose = require("mongoose")
 
 
+
 const albumSchema = mongoose.Schema({
 
     albumName: {
@@ -18,7 +19,7 @@ const albumSchema = mongoose.Schema({
     },
     songsIds: [
         {
-            type: String,
+            type: mongoose.Schema.Types.ObjectId,
             ref: 'Song'
         }
     ]
