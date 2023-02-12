@@ -22,7 +22,7 @@ const login = async (req, res) => {
 
 
   } catch (error) {
-    return res.status(500).json({ msg: err.message });
+    return res.status(500).json({ msg: error.message });
   }
 
 
@@ -44,7 +44,7 @@ const signUp = async (req, res) => {
       res.status(201).json({ msg: "User created successfully" });
     });
   } catch (error) {
-    return res.status(500).json({ msg: err.message });
+    return res.status(500).json({ msg: error.message });
   }
 
 

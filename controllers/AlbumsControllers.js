@@ -88,38 +88,44 @@ const deleteAlbum = async (req,res)=>{
     }
 }
 
-const addSongToAlbum = async (req,res)=>{
-    const songId = req.headers["songid"]
-    const albumid = req.params
+const addSongsToAlbum = async (req,res)=>{
+    const {songs} = req.body
+    const albumid = req.params.albumid
     try {
-        console.log(songId)
-        const findSong = Song.findById(songId)
-        if (!findSong){
-            res.status(400).json({msg:"song does not exist"})
-        }
-        const findAlbum = Album.findById(albumid)
+        
+        const songPromises = songs.map(song => {
+            const newSong = new Song(song);
+            return newSong.save();
+          });
+          const findAlbum = Album.findById(albumid)
         if (!findAlbum){
             res.status(400).json({msg:"Album does not exist"})
         }
-        Album.updateOne(
-            {_id:albumid},{ $push: { songsIds: songId } },(err)=>{
+        Promise.all(songPromises)
+        .then(songs => {
+          // Get the IDs of the songs that were just saved
+          const songsIds = songs.map(song => song._id);
+  
+          Album.updateOne(
+            {_id:albumid},{ $push: { songsIds: songsIds } },(err)=>{
                 if (err) {
                   return res.status(500).json({ msg: "Something went wrong " });
                 }
                 
                 res.status(200).json({msg:"song added to the Album"})}
         )
+          
+        }).catch(error => {
+            throw error;
+          });
+        
 
         
     } catch (error) {
-        return res.status(500).json({ msg: err.message });
+        return res.status(500).json({ msg: error.message });
     }
 }
-// btw the addSongToAlbum function needs only the songid but the artist
-// does not need to add a song to the dataBase then add it again to the Album so i need 
-// a function that gets a the music from the request body and add it 
-// to the songs and takes the ids and add it to the Album it self
-// its just an update version of the addAlbum function done previously
+
 const removeSongFromAlbum = async (req,res)=>{
     const songId = req.headers["songid"]
     const albumid = req.params
@@ -174,6 +180,6 @@ module.exports = {
     getArtistAlbums,
     addAlbum,
     deleteAlbum,// delete by id
-    addSongToAlbum,//here we are working only with the song id // update the Album
+    addSongsToAlbum,//here we are working only with the song id // update the Album
     removeSongFromAlbum//here we are working only with the song id 
   };

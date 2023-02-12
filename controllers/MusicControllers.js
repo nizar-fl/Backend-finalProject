@@ -16,9 +16,9 @@ const  addSongToPlaylist = async (req,res)=>{
         //check if the song exists in the data base 
         const findSong = await Song.findById(songid)
         
-        // if(!findSong){
-        //     res.status(400).json({msg:"something wrong with the song's id or qong does not exist"})
-        // }
+        if(!findSong){
+            res.status(400).json({msg:"something wrong with the song's id or qong does not exist"})
+        }
         playlist.updateOne(
             {_id:playlistId},{ $push: { songsIds: songid } },(err)=>{
                 if (err) {
