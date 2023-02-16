@@ -3,6 +3,7 @@ const User = require("../models/userSchema");
 const jwt = require("jsonwebtoken");
 
 
+
 const login = async (req, res) => {
   const { email, password } = req.body;
   try {
@@ -39,6 +40,7 @@ const changePassword = async(req ,res)=>{
     if (!correctPassword) {
       return res.status(400).json({ msg: "your old password is wrong" })
     }
+    
     const newhashedPassword = await bcrypt.hash(newPassword, 10);
     User.updateOne({email:email},{$set: {password:newhashedPassword}},(err)=>{
       if(err){

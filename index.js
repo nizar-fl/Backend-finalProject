@@ -13,6 +13,7 @@ connectDB();
 
 //make the request body readable
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.use("/auth", require("./routes/Auth"));
 app.use("/playlists",require("./routes/playlistPages"))
