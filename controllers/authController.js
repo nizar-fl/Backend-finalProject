@@ -55,13 +55,13 @@ const changePassword = async(req ,res)=>{
 }
 
 const signUp = async (req, res) => {
-  const { email, password } = req.body;
+  const { email, newPassword } = req.body;
   try {
     const findUser = await User.findOne({ email })
     if (findUser) {
       return res.status(400).json({ msg: "This email is already assigned to an account" })
     }
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
     const newUser = new User({ ...req.body, password: hashedPassword });
     newUser.save((err) => {
       if (err) {
