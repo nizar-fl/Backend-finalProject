@@ -27,6 +27,30 @@ const login = async (req, res) => {
 
 
 };
+const changePassword = async(req ,res)=>{
+  const { email, oldPassword , newPassword } = req.body;
+  console.log("here")
+  try {
+    const findUser = await User.findOne({ email })
+    if (!findUser) {
+      return res.status(400).json({ msg: "User does not exist" })
+    }
+    const correctPassword = await bcrypt.compare(oldPassword, findUser.password);
+    if (!correctPassword) {
+      return res.status(400).json({ msg: "your old password is wrong" })
+    }
+    const newhashedPassword = await bcrypt.hash(newPassword, 10);
+    User.updateOne({email:email},{$set: {password:newhashedPassword}},(err)=>{
+      if(err){
+        return res.status(500).json({msg:"something went wrong"})
+      }
+      res.status(200).json({msg:'new password saved successfully'})
+    })
+    
+  } catch (error) {
+    return res.status(500).json({ msg: error.message });
+  }
+}
 
 const signUp = async (req, res) => {
   const { email, password } = req.body;
@@ -53,4 +77,5 @@ const signUp = async (req, res) => {
 module.exports = {
   login,
   signUp,
+  changePassword
 };
