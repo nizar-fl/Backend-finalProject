@@ -21,10 +21,10 @@ const isAuth = require("../middlewares/isAuth");
 const isArtist = require("../middlewares/isArist")
 
 router.post("/addPlaylist",isAuth, addPlaylist);
-router.get("/getUserPlaylists/:userID",isAuth, getUserPlaylists);
+router.get("/getUserPlaylists",isAuth, getUserPlaylists);
 router.delete("/deletePlaylist/:playlistId" ,isAuth, deletePlaylist)
 router.put("/updatePlaylist/:playlistId",isAuth, updatePlaylist)
-router.get("/getPlaylist/:playlistID" ,isAuth, getplaylist)
+router.get("/getPlaylist/:playlistId" ,isAuth, getplaylist)
 module.exports = router;
 
 

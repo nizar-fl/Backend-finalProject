@@ -1,4 +1,4 @@
-const express = require("express");
+const  express = require("express");
 const { login, signUp,changePassword } = require("../controllers/authController");
 const router = express.Router();
 const validatePassword = require("../middlewares/isPasswordAvailable")

@@ -75,7 +75,7 @@ const updatePlaylist = async (req,res)=>{
 
 }
 const getplaylist = async (req,res)=>{
-    const playlistId = req.params.playlistID
+    const {playlistId} = req.params
     try {
       playlist.findById(playlistId,(err,playlist)=>{
         if(err){

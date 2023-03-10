@@ -68,15 +68,15 @@ const addAlbum = async(req,res)=>{
       }
 }
 const deleteAlbum = async (req,res)=>{
-    const albumId= req.params.albumid
+    const {albumid}= req.params
     // const Artistid = req.headers["Artistid"] //i may add a verification middleware to check if its the artist that is sending the request 
     try {
-        const findAlbum = Album.findById(albumId)
+        const findAlbum = Album.findById(albumid)
         if (!findAlbum){
             res.status(400).json({msg:"Album does not exist"})
         }
-        console.log(albumId)
-        Album.deleteOne({_id: albumId},(err) => {
+        console.log(albumid)
+        Album.deleteOne({_id: albumid},(err) => {
             if (err) {
               return res.status(500).json({ msg: "Something went wrong" });
             }
@@ -90,7 +90,7 @@ const deleteAlbum = async (req,res)=>{
 
 const addSongsToAlbum = async (req,res)=>{
     const {songs} = req.body
-    const albumid = req.params.albumid
+    const {albumid} = req.params
     try {
         
         const songPromises = songs.map(song => {
@@ -128,7 +128,7 @@ const addSongsToAlbum = async (req,res)=>{
 
 const removeSongFromAlbum = async (req,res)=>{
     const songId = req.headers["songid"]
-    const albumid = req.params
+    const {albumid} = req.params
     try {
         const findSong = Song.findById(songId)
         if (!findSong){
@@ -153,10 +153,10 @@ const removeSongFromAlbum = async (req,res)=>{
     }
 } 
 const getAlbumById = async (req,res)=>{
-    const AlbumId = req.params.albumid
-    console.log(AlbumId)
+    const {albumid} = req.params
+    console.log(albumid)
     try {
-      Album.findById(AlbumId,(err,album)=>{
+      Album.findById(albumid,(err,album)=>{
         if(err){
           console.log(err)
           res.status(400).json({msg:"album not found"})
